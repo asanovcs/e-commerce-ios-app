@@ -1,0 +1,12 @@
+//
+//  Config.xcconfig
+//  Ecommerce
+//
+//  Created by Ernis Asanov on 05/12/2022.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+SHOPIFY_SHOP_NAME = deveem-e-commerce.myshopify.com
+SHOPIFY_API_KEY = 1636cbde920cc6c0e4cf2090085d700b
