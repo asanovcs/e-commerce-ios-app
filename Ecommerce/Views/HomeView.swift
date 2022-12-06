@@ -6,20 +6,21 @@
 //
 
 import SwiftUI
+import Buy
 
 struct HomeView: View {
     
-    private var shopifyApi = ShopifyApi()
+    @Binding var collections: [Collection]
     
     var body: some View {
         VStack {
             List {
-                ForEach(1..<11) { index in
+                ForEach($collections) { $collection in
                     ZStack {
                         NavigationLink(destination: SearchView()) {
                             EmptyView()
                         }
-                        CategoryCardView(categoryName: "Catalog \(index)")
+                        CategoryCardView(collection: collection)
                     }
                 }
                 .listRowSeparator(.hidden)
@@ -28,19 +29,11 @@ struct HomeView: View {
             .scrollContentBackground(.hidden)
             .navigationBarTitle(Text("Shop"))
         }
-        .onAppear() {
-            shopifyApi.fetchCollections() { collections in
-                collections.forEach { collection in
-                    print("coll \(collection.title)")
-                    //let products = collection.products.edges.map { $0.node }
-                }
-            }
-        }
     }
 }
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+        HomeView(collections: .constant(Collection.sampleData))
     }
 }

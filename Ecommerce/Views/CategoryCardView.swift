@@ -9,14 +9,13 @@ import SwiftUI
 
 struct CategoryCardView: View {
     
-    var categoryName: String
+    var collection: Collection
     
     var body: some View {
         VStack(alignment: .leading) {
-            Image("sample_catalog")
-                .resizable()
-                .scaledToFit()
-            Text(categoryName)
+            CustomImageView(urlString: collection.imageUrl)
+                .cornerRadius(16)
+            Text(collection.title)
                 .font(.headline)
             Text("785 Items")
                 .foregroundColor(.gray)
@@ -28,6 +27,6 @@ struct CategoryCardView: View {
 
 struct CategoryCardView_Previews: PreviewProvider {
     static var previews: some View {
-        CategoryCardView(categoryName: "Catalog name")
+        CategoryCardView(collection: Collection.sampleData[0])
     }
 }

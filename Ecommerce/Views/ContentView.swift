@@ -8,12 +8,15 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @StateObject private var store = ShopifyStore()
+    var shopifyApi = ShopifyApi()
 
     var body: some View {
             TabView {
                 
                 NavigationView {
-                    HomeView()
+                    HomeView(collections: $store.collections)
                 }
                 .tabItem {
                     Label("Home", systemImage: "house")
@@ -34,6 +37,15 @@ struct ContentView: View {
                         Label("Profile", systemImage: "person.crop.circle")
                             .environment(\.symbolVariants, .none)
                     }
+            }
+            .onAppear() {
+                shopifyApi.fetchCollections() { collections in
+                    store.collections = collections
+                    collections.forEach { collection in
+                        print("coll \(collection.title)")
+                        //let products = collection.products.edges.map { $0.node }
+                    }
+                }
             }
         }
 }

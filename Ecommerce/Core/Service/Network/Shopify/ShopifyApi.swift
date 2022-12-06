@@ -7,12 +7,15 @@
 
 import Foundation
 import Buy
+import UIKit
 
 class ShopifyApi {
     
     var shopDomain = InfoPlist.shopifyShopName
     var appKey = InfoPlist.shopifyApiKey
     var locale = Locale(identifier: "en-US")
+    
+    static let maxImageDimension = Int32(UIScreen.main.bounds.width)
     
     var client: Graph.Client
     
@@ -26,14 +29,17 @@ class ShopifyApi {
     // ----------------------------------
     //  MARK: - Collections -
     //
-    func fetchCollections(completion: @escaping ([Storefront.Collection]) -> Void) {
+    func fetchCollections(completion: @escaping ([Collection]) -> Void) {
         let query = Storefront.buildQuery { $0
-            .collections(first: 10) { $0
+            .collections(first: 25) { $0
                 .edges { $0
                     .node { $0
                         .id()
                         .title()
-                        .products(first: 10) { $0
+                        .image() { $0
+                            .url()
+                        }
+                        .products(first: 250) { $0
                             .edges { $0
                                 .node { $0
                                     .id()
@@ -50,7 +56,10 @@ class ShopifyApi {
 
         let task = client.queryGraphWith(query) { response, error in
             if let response = response {
-                let collections = response.collections.edges.map { $0.node }
+                let collections = response.collections.edges.map {
+                    Collection(id: $0.node.id.rawValue, title: $0.node.title, imageUrl: $0.node.image!.url.absoluteString)
+                }
+                
                 completion(collections)
             } else {
                 print("Query failed: \(error)")
