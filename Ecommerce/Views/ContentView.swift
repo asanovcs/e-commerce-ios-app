@@ -43,7 +43,6 @@ struct ContentView: View {
                     store.collections = collections
                     collections.forEach { collection in
                         print("coll \(collection.title)")
-                        //let products = collection.products.edges.map { $0.node }
                     }
                 }
             }

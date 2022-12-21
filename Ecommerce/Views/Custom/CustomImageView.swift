@@ -16,7 +16,6 @@ struct CustomImageView: View {
     var body: some View {
         Image(uiImage: image)
             .resizable()
-            .scaledToFit()
             .onReceive(imageLoader.$image) { image in
                 self.image = image
             }

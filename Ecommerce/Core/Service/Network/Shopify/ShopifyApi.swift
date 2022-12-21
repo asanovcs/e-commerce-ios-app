@@ -40,14 +40,7 @@ class ShopifyApi {
                             .url()
                         }
                         .products(first: 250) { $0
-                            .edges { $0
-                                .node { $0
-                                    .id()
-                                    .title()
-                                    .productType()
-                                    .description()
-                                }
-                            }
+                            .fragmentForStandardProduct()
                         }
                     }
                 }
@@ -57,7 +50,7 @@ class ShopifyApi {
         let task = client.queryGraphWith(query) { response, error in
             if let response = response {
                 let collections = response.collections.edges.map {
-                    Collection(id: $0.node.id.rawValue, title: $0.node.title, imageUrl: $0.node.image!.url.absoluteString)
+                    Collection(id: $0.node.id.rawValue, title: $0.node.title, imageUrl: $0.node.image!.url.absoluteString, products: $0.node.products.edges)
                 }
                 
                 completion(collections)

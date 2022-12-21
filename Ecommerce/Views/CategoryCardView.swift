@@ -14,10 +14,13 @@ struct CategoryCardView: View {
     var body: some View {
         VStack(alignment: .leading) {
             CustomImageView(urlString: collection.imageUrl)
+                .aspectRatio(contentMode: .fill)
+                .frame(height: 160)
+                .clipped()
                 .cornerRadius(16)
             Text(collection.title)
                 .font(.headline)
-            Text("785 Items")
+            Text("\(collection.products?.count ?? 0) Items")
                 .foregroundColor(.gray)
                 .font(.caption)
             
